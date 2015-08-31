@@ -5,7 +5,7 @@ type KnpClient struct {
 }
 
 func NewKnpClient(address string) (*KnpClient, error) {
-	client, err := NewClient(address, "RUN -tab\n")
+	client, err := NewClient(address, "RUN -normal -tab\n")
 	if err != nil {
 		return nil, err
 	}
