@@ -37,3 +37,16 @@ func NewDependencyInfo(line string) (*DependencyInfo, error) {
 }
 
 type DependencyInfos []*DependencyInfo
+
+func (self *DependencyInfo) GetPredRep() string {
+	pname, ok := self.Features["用言代表表記"]
+	if !ok {
+		return ""
+	}
+	vtype, ok := self.Features["用言"]
+	if !ok {
+		return ""
+	}
+
+	return pname + ":" + vtype
+}
