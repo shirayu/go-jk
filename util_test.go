@@ -1,7 +1,6 @@
 package jk
 
 import (
-	"strings"
 	"testing"
 )
 
@@ -24,8 +23,7 @@ func TestGetPredRep(t *testing.T) {
 	}
 
 	for _, testcase := range cases {
-		lines := strings.Split(testcase.Lines, "\n")
-		s, err := NewSentence(lines)
+		s, err := NewSentence(testcase.Lines)
 		if err != nil {
 			t.Fatal(err)
 		}

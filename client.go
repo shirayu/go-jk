@@ -2,6 +2,7 @@ package jk
 
 import (
 	"bufio"
+	"bytes"
 	"fmt"
 	"net"
 	"net/textproto"
@@ -38,19 +39,22 @@ func NewClient(address string, option string) (*Client, error) {
 	return self, err
 }
 
-func (self *Client) RawParse(query string) ([]string, error) {
+func (self *Client) RawParse(query string) (string, error) {
 	fmt.Fprintf(self.connection, "%s\n", query)
 
-	lines := make([]string, 0)
-
-	for {
+	var buf bytes.Buffer
+	for idx := 0; ; idx++ {
 		line, err := self.tp.ReadLine()
 		if err != nil {
-			return nil, err
+			return "", err
 		} else if line == "EOS" {
 			break
 		}
-		lines = append(lines, line)
+
+		if idx != 0 {
+			buf.WriteRune('\n')
+		}
+		buf.WriteString(line)
 	}
-	return lines, nil
+	return buf.String(), nil
 }

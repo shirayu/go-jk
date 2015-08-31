@@ -1,6 +1,7 @@
 package jk
 
 import (
+	"strings"
 	"testing"
 )
 
@@ -20,8 +21,8 @@ EOS`
 	if err != nil {
 		t.Error("Error to parse [%v]", err)
 	}
-	if len(ret_lines) != 9 {
-		t.Errorf("expceted length is 4 but %d", len(ret_lines))
+	if c := strings.Count(ret_lines, "\n"); c != 8 {
+		t.Errorf("expceted length is 8 but %d", c)
 	}
 
 	//     s, err := knp.Parse("パンが食べられる")

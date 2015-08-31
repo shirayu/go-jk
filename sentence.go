@@ -14,12 +14,12 @@ type Sentence struct {
 	comment      string
 }
 
-func NewSentence(lines []string) (*Sentence, error) {
+func NewSentence(lines string) (*Sentence, error) {
 	self := new(Sentence)
 	self.Bunsetsus = DependencyInfos{}
 	self.BasicPhrases = DependencyInfos{}
 
-	for _, line := range lines {
+	for _, line := range strings.Split(lines, "\n") {
 
 		if strings.HasPrefix(line, "#") {
 			self.comment += line
