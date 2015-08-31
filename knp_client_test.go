@@ -25,12 +25,12 @@ EOS`
 		t.Errorf("expceted length is 8 but %d", c)
 	}
 
-	//     s, err := knp.Parse("パンが食べられる")
-	//     if err != nil {
-	//         t.Error("Error to parse [%v]", err)
-	//     }
-	//     if s.Len() != 4 {
-	//         t.Errorf("expceted length is 4 but %d", s.Len())
-	//     }
+	s, err := knp.Parse(input)
+	if err != nil {
+		t.Error("Error to parse [%v]", err)
+	}
+	if s.Len() != 4 {
+		t.Errorf("expceted length is 4 but %d", s.Len())
+	}
 
 }
