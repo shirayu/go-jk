@@ -21,8 +21,8 @@ EOS`
 	if err != nil {
 		t.Error("Error to parse [%v]", err)
 	}
-	if c := strings.Count(ret_lines, "\n"); c != 8 {
-		t.Errorf("expceted length is 8 but %d", c)
+	if c := strings.Count(ret_lines, "\n"); c != 9 {
+		t.Errorf("expceted length is 9 but %d", c)
 	}
 
 	s, err := knp.Parse(input)

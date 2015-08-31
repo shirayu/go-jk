@@ -43,18 +43,17 @@ func (self *Client) RawParse(query string) (string, error) {
 	fmt.Fprintf(self.connection, "%s\n", query)
 
 	var buf bytes.Buffer
-	for idx := 0; ; idx++ {
+	for {
 		line, err := self.tp.ReadLine()
 		if err != nil {
 			return "", err
 		} else if line == "EOS" {
+			buf.WriteString("EOS")
 			break
 		}
 
-		if idx != 0 {
-			buf.WriteRune('\n')
-		}
 		buf.WriteString(line)
+		buf.WriteRune('\n')
 	}
 	return buf.String(), nil
 }

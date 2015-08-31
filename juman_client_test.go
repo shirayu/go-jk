@@ -15,8 +15,8 @@ func TestJuman(t *testing.T) {
 	if err != nil {
 		t.Error("Error to parse [%v]", err)
 	}
-	if c := strings.Count(ret_lines, "\n"); c != 3 {
-		t.Errorf("expceted length is 3 but %d", c)
+	if c := strings.Count(ret_lines, "\n"); c != 4 {
+		t.Errorf("expceted length is 4 but %d", c)
 	}
 
 	s, err := juman.Parse("パンが食べられる")
