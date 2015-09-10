@@ -1,6 +1,9 @@
 
 # go-jk
 
+[![Build Status](https://travis-ci.org/shirayu/go-jk.svg?branch=master)](https://travis-ci.org/shirayu/go-jk)
+[![Coverage Status](https://coveralls.io/repos/shirayu/go-jk/badge.png)](https://coveralls.io/r/shirayu/go-jk)
+
 ## What's this
 
 - A go library of a Japanese morphological analyzer [JUMAN](http://nlp.ist.i.kyoto-u.ac.jp/index.php?JUMAN) and Japanese Dependency and Case Structure Analyzer [KNP](http://nlp.ist.i.kyoto-u.ac.jp/index.php?KNP)
