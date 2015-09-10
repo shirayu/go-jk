@@ -59,13 +59,7 @@ func (s *JumanTestServer) HandleConn(client net.Conn) {
 		if strings.HasPrefix(string(line), "RUN") {
 			fmt.Fprintf(client, "OK\n")
 		} else if string(line) == "パンが食べられる\n" {
-			out := `パン ぱん パン 名詞 6 普通名詞 1 * 0 * 0 "代表表記:パン/ぱん カテゴリ:人工物-食べ物 ドメイン:料理・食事"
-が が が 助詞 9 格助詞 1 * 0 * 0 NIL
-食べ たべ 食べる 動詞 2 * 0 母音動詞 1 未然形 3 "代表表記:食べる/たべる ドメイン:料理・食事"
-られる られる られる 接尾辞 14 動詞性接尾辞 7 母音動詞 1 基本形 2 "代表表記:られる/られる"
-EOS
-`
-			fmt.Fprintf(client, out)
+			fmt.Fprintf(client, juman_input_sample+"\n")
 		} else {
 			fmt.Fprintf(client, "Un expected input\n")
 			fmt.Fprintf(client, "EOS\n")

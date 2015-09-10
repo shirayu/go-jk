@@ -12,14 +12,6 @@
 go get github.com/shirayu/go-jk
 ```
 
-## Restriction
-Currently you should run JUMAN server and KNP server for tests
-
-````
-knp -N 31000 -F -S &
-juman -N 32000 -F -S &
-```
-
 ## Acknowledgement
 
 I developed this program as a part of the research project 
