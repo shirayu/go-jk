@@ -2,6 +2,7 @@ package jk
 
 import (
 	"bufio"
+	"bytes"
 	"fmt"
 	"github.com/lestrrat/go-tcptest"
 	"io"
@@ -12,24 +13,24 @@ import (
 	"time"
 )
 
-type JumanTestServer struct {
+type KnpTestServer struct {
 	Host string
 	Port int
 }
 
-func (s *JumanTestServer) Run() error {
+func (s *KnpTestServer) Run() error {
 	server, err := net.Listen("tcp", s.Host+":"+strconv.Itoa(s.Port))
 	if err != nil {
 		return err
 	}
-	conns := s.ClientConns(server)
+	conns := s.SocketClientConns(server)
 	for {
 		go s.HandleConn(<-conns)
 	}
 	return nil
 }
 
-func (s *JumanTestServer) ClientConns(listener net.Listener) chan net.Conn {
+func (s *KnpTestServer) SocketClientConns(listener net.Listener) chan net.Conn {
 	ch := make(chan net.Conn)
 	i := 0
 	go func() {
@@ -47,8 +48,9 @@ func (s *JumanTestServer) ClientConns(listener net.Listener) chan net.Conn {
 	return ch
 }
 
-func (s *JumanTestServer) HandleConn(client net.Conn) {
+func (s *KnpTestServer) HandleConn(client net.Conn) {
 	b := bufio.NewReader(client)
+	var buf bytes.Buffer
 	for {
 		line, err := b.ReadBytes('\n')
 		if err == io.EOF {
@@ -58,19 +60,21 @@ func (s *JumanTestServer) HandleConn(client net.Conn) {
 		}
 		if strings.HasPrefix(string(line), "RUN") {
 			fmt.Fprintf(client, "OK\n")
-		} else if string(line) == input_sample+"\n" {
-			fmt.Fprintf(client, juman_input_sample+"\n")
 		} else {
-			fmt.Fprintf(client, "Un expected input\n")
-			fmt.Fprintf(client, "EOS\n")
+			buf.Write(line)
+		}
+
+		if string(line) == "EOS\n" {
+			fmt.Fprintf(client, knp_output_sample)
+			buf.Reset()
 		}
 	}
 }
 
-func TestJuman(t *testing.T) {
+func TestKnp(t *testing.T) {
 	fin := make(chan int)
 	jts := func(port int) {
-		jtserver := &JumanTestServer{Host: "localhost", Port: port}
+		jtserver := &KnpTestServer{Host: "localhost", Port: port}
 		go jtserver.Run()
 		<-fin
 		//         jtserver.Shutdown()
@@ -80,20 +84,20 @@ func TestJuman(t *testing.T) {
 		t.Error("Failed to start jtserver: %s", err)
 	}
 
-	juman, err := NewJumanClient("localhost:" + strconv.Itoa(server.Port()))
+	knp, err := NewKnpSocketClient("localhost:" + strconv.Itoa(server.Port()))
 	if err != nil {
-		t.Fatal("Error to open the juman socket: ", err)
+		t.Fatal("Error to open the knp socket: ", err)
 	}
 
-	ret_lines, err := juman.RawParse(input_sample)
+	ret_lines, err := knp.RawParse(juman_input_sample)
 	if err != nil {
 		t.Error("Error to parse [%v]", err)
 	}
-	if c := strings.Count(ret_lines, "\n"); c != 4 {
-		t.Errorf("expceted length is 4 but %d", c)
+	if c := strings.Count(ret_lines, "\n"); c != 9 {
+		t.Errorf("expceted length is 9 but %d", c)
 	}
 
-	s, err := juman.Parse(input_sample)
+	s, err := knp.Parse(juman_input_sample)
 	if err != nil {
 		t.Error("Error to parse [%v]", err)
 	}

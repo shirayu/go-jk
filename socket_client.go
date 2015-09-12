@@ -9,15 +9,15 @@ import (
 	"strings"
 )
 
-type Client struct {
+type SocketClient struct {
 	address    string
 	connection net.Conn
 	tp         *textproto.Reader
 }
 
-func NewClient(address string, option string) (*Client, error) {
+func NewSocketClient(address string, option string) (*SocketClient, error) {
 	var err error
-	self := new(Client)
+	self := new(SocketClient)
 	self.address = address
 
 	self.connection, err = net.Dial("tcp", address)
@@ -39,7 +39,7 @@ func NewClient(address string, option string) (*Client, error) {
 	return self, err
 }
 
-func (self *Client) RawParse(query string) (string, error) {
+func (self *SocketClient) RawParse(query string) (string, error) {
 	fmt.Fprintf(self.connection, "%s\n", query)
 
 	var buf bytes.Buffer
