@@ -3,6 +3,7 @@
 
 [![Build Status](https://travis-ci.org/shirayu/go-jk.svg?branch=master)](https://travis-ci.org/shirayu/go-jk)
 [![Coverage Status](https://coveralls.io/repos/shirayu/go-jk/badge.png)](https://coveralls.io/r/shirayu/go-jk)
+[![Apache License](http://img.shields.io/badge/license-APACHE2-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0)
 
 ## What's this
 
@@ -27,5 +28,5 @@ supported by [CREST, JST](http://www.jst.go.jp/kisoken/crest/en/).
 - Yuta Hayashibe
 
 ## Licence
-- New BSD License (3-clause BSD License) (see the file BSD)
+- [Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0)
 
