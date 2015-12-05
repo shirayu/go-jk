@@ -10,7 +10,7 @@ before_install:
     - go get github.com/lestrrat/go-tcptest
 
 script:
-    - $HOME/gopath/bin/goveralls -repotoken VIxZor1uT7eM57wt55hVS1cH1v21ZAzn0
+    - $HOME/gopath/bin/goveralls -service=travis-ci
 
 install:
     - go get -d -v ./...
