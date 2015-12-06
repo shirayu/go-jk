@@ -26,7 +26,7 @@ func (s *JumanTestServer) Run() error {
 	for {
 		go s.HandleConn(<-conns)
 	}
-	return nil
+	//     return nil
 }
 
 func (s *JumanTestServer) SocketClientConns(listener net.Listener) chan net.Conn {
@@ -77,7 +77,7 @@ func TestJuman(t *testing.T) {
 	}
 	server, err := tcptest.Start(jts, 3*time.Second)
 	if err != nil {
-		t.Error("Failed to start jtserver: %s", err)
+		t.Errorf("Failed to start jtserver: %v", err)
 	}
 
 	juman, err := NewJumanSocketClient("localhost:" + strconv.Itoa(server.Port()))
@@ -87,7 +87,7 @@ func TestJuman(t *testing.T) {
 
 	ret_lines, err := juman.RawParse(input_sample)
 	if err != nil {
-		t.Error("Error to parse [%v]", err)
+		t.Errorf("Error to parse [%v]", err)
 	}
 	if c := strings.Count(ret_lines, "\n"); c != 4 {
 		t.Errorf("expceted length is 4 but %d", c)
@@ -95,7 +95,7 @@ func TestJuman(t *testing.T) {
 
 	s, err := juman.Parse(input_sample)
 	if err != nil {
-		t.Error("Error to parse [%v]", err)
+		t.Errorf("Error to parse [%v]", err)
 	}
 	if s.Len() != 4 {
 		t.Errorf("expceted length is 4 but %d", s.Len())

@@ -27,7 +27,7 @@ func (s *KnpTestServer) Run() error {
 	for {
 		go s.HandleConn(<-conns)
 	}
-	return nil
+	//     return nil
 }
 
 func (s *KnpTestServer) SocketClientConns(listener net.Listener) chan net.Conn {
@@ -81,7 +81,7 @@ func TestKnp(t *testing.T) {
 	}
 	server, err := tcptest.Start(jts, 3*time.Second)
 	if err != nil {
-		t.Error("Failed to start jtserver: %s", err)
+		t.Errorf("Failed to start jtserver: %s", err)
 	}
 
 	knp, err := NewKnpSocketClient("localhost:" + strconv.Itoa(server.Port()))
@@ -91,7 +91,7 @@ func TestKnp(t *testing.T) {
 
 	ret_lines, err := knp.RawParse(juman_input_sample)
 	if err != nil {
-		t.Error("Error to parse [%v]", err)
+		t.Errorf("Error to parse [%v]", err)
 	}
 	if c := strings.Count(ret_lines, "\n"); c != 9 {
 		t.Errorf("expceted length is 9 but %d", c)
@@ -99,7 +99,7 @@ func TestKnp(t *testing.T) {
 
 	s, err := knp.Parse(juman_input_sample)
 	if err != nil {
-		t.Error("Error to parse [%v]", err)
+		t.Errorf("Error to parse [%v]", err)
 	}
 	if s.Len() != 4 {
 		t.Errorf("expceted length is 4 but %d", s.Len())
