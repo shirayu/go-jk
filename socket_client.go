@@ -9,42 +9,45 @@ import (
 	"strings"
 )
 
+//SocketClient communicates to a server with a socket
 type SocketClient struct {
 	address    string
 	connection net.Conn
 	tp         *textproto.Reader
 }
 
+//NewSocketClient creats a SocketClient
 func NewSocketClient(address string, option string) (*SocketClient, error) {
 	var err error
-	self := new(SocketClient)
-	self.address = address
+	scc := new(SocketClient)
+	scc.address = address
 
-	self.connection, err = net.Dial("tcp", address)
+	scc.connection, err = net.Dial("tcp", address)
 	if err != nil {
 		return nil, err
 	}
-	//     defer self.connection.Close()
+	//     defer scc.connection.Close()
 
-	r := bufio.NewReader(self.connection)
-	self.tp = textproto.NewReader(r)
+	r := bufio.NewReader(scc.connection)
+	scc.tp = textproto.NewReader(r)
 
-	fmt.Fprintf(self.connection, option)
+	fmt.Fprintf(scc.connection, option)
 	for {
-		line, _ := self.tp.ReadLine()
+		line, _ := scc.tp.ReadLine()
 		if strings.Index(line, "OK") != -1 {
 			break
 		}
 	}
-	return self, err
+	return scc, err
 }
 
-func (self *SocketClient) RawParse(query string) (string, error) {
-	fmt.Fprintf(self.connection, "%s\n", query)
+//RawParse returns a single raw result which ends with "EOS" for the given sentence
+func (scc *SocketClient) RawParse(query string) (string, error) {
+	fmt.Fprintf(scc.connection, "%s\n", query)
 
 	var buf bytes.Buffer
 	for {
-		line, err := self.tp.ReadLine()
+		line, err := scc.tp.ReadLine()
 		if err != nil {
 			return "", err
 		} else if line == "EOS" {

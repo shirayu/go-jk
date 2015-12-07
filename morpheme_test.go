@@ -38,8 +38,8 @@ func TestMorpheme(t *testing.T) {
 
 	if m.Midashi != "探して" {
 		t.Errorf("Midashi Error\n")
-	} else if m.Katsuyou2_id != 14 {
-		t.Errorf("Katsuyou2_id Error\n")
+	} else if m.Katsuyou2ID != 14 {
+		t.Errorf("Katsuyou2ID Error\n")
 	} else if m.Seminfo != "代表表記:探す/さがす" {
 		t.Errorf("Seminfo_id Error\n")
 	} else if m.Rep != "探す/さがす" {
@@ -58,8 +58,8 @@ func TestMorphemeKNP(t *testing.T) {
 	gf := GetFeatures(`<代表表記:構文/こうぶん><カテゴリ:抽象物><正規化代表表記:構文/こうぶん><漢字>`)
 	if m.Midashi != "構文" {
 		t.Errorf("Midashi Error\n")
-	} else if m.Katsuyou2_id != 0 {
-		t.Errorf("Katsuyou2_id Error\n")
+	} else if m.Katsuyou2ID != 0 {
+		t.Errorf("Katsuyou2ID Error\n")
 	} else if m.Rep != "構文/こうぶん" {
 		t.Errorf("Rep Error\n")
 	} else if !reflect.DeepEqual(m.Features, gf) {

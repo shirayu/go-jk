@@ -5,26 +5,29 @@ import (
 	"strings"
 )
 
+//Features is a map of features
 type Features map[string]string
 
+//Morpheme is a morpheme
 type Morpheme struct {
-	Doukeis      Morphemes
-	Midashi      string
-	Yomi         string
-	Genkei       string
-	Hinshi       string
-	Hinshi_id    int
-	Bunrui       string
-	Bunrui_id    int
-	Katsuyou1    string
-	Katsuyou1_id int
-	Katsuyou2    string
-	Katsuyou2_id int
-	Seminfo      string
-	Rep          string
-	Features     Features
+	Doukeis     Morphemes
+	Midashi     string
+	Yomi        string
+	Genkei      string
+	Hinshi      string
+	HinshiID    int
+	Bunrui      string
+	BunruiID    int
+	Katsuyou1   string
+	Katsuyou1ID int
+	Katsuyou2   string
+	Katsuyou2ID int
+	Seminfo     string
+	Rep         string
+	Features    Features
 }
 
+//GetFeatures returns features for the given feature expression
 func GetFeatures(line string) Features {
 	num := strings.Count(line, "<")
 	ret := make(Features, num)
@@ -50,71 +53,72 @@ func GetFeatures(line string) Features {
 	return ret
 }
 
+//NewMorpheme returns a morpheme for the given line
 func NewMorpheme(line string) (*Morpheme, error) {
-	self := new(Morpheme)
+	mrph := new(Morpheme)
 	items := strings.SplitN(line, " ", 12)
 
-	self.Midashi = items[0]
-	self.Yomi = items[1]
-	self.Genkei = items[2]
-	self.Hinshi = items[3]
+	mrph.Midashi = items[0]
+	mrph.Yomi = items[1]
+	mrph.Genkei = items[2]
+	mrph.Hinshi = items[3]
 
-	hinshi_id, err := strconv.Atoi(items[4])
+	hinshiID, err := strconv.Atoi(items[4])
 	if err != nil {
 		return nil, err
 	}
-	self.Hinshi_id = hinshi_id
+	mrph.HinshiID = hinshiID
 
-	self.Bunrui = items[5]
-	bunrui_id, err := strconv.Atoi(items[6])
+	mrph.Bunrui = items[5]
+	bunruiID, err := strconv.Atoi(items[6])
 	if err != nil {
 		return nil, err
 	}
-	self.Bunrui_id = bunrui_id
+	mrph.BunruiID = bunruiID
 
-	self.Katsuyou1 = items[7]
-	katsuyo1_id, err := strconv.Atoi(items[8])
+	mrph.Katsuyou1 = items[7]
+	katsuyo1ID, err := strconv.Atoi(items[8])
 	if err != nil {
 		return nil, err
 	}
-	self.Katsuyou1_id = katsuyo1_id
+	mrph.Katsuyou1ID = katsuyo1ID
 
-	self.Katsuyou2 = items[9]
-	katsuyo2_id, err := strconv.Atoi(items[10])
+	mrph.Katsuyou2 = items[9]
+	katsuyo2ID, err := strconv.Atoi(items[10])
 	if err != nil {
 		return nil, err
 	}
-	self.Katsuyou2_id = katsuyo2_id
+	mrph.Katsuyou2ID = katsuyo2ID
 
 	rest := items[11]
-	seminfo_start_pos := strings.Index(rest, "\"")
-	if seminfo_start_pos == -1 {
-		self.Seminfo = ""
-		self.Rep = self.Genkei + "/" + self.Genkei
+	seminfoStartPos := strings.Index(rest, "\"")
+	if seminfoStartPos == -1 {
+		mrph.Seminfo = ""
+		mrph.Rep = mrph.Genkei + "/" + mrph.Genkei
 	} else {
-		seminfo_char_num := strings.Index(rest[seminfo_start_pos+1:], "\"")
-		self.Seminfo = rest[seminfo_start_pos+1 : seminfo_start_pos+1+seminfo_char_num]
+		seminfoCharNum := strings.Index(rest[seminfoStartPos+1:], "\"")
+		mrph.Seminfo = rest[seminfoStartPos+1 : seminfoStartPos+1+seminfoCharNum]
 
-		ret_name := "代表表記:"
-		rep_start := strings.Index(self.Seminfo, ret_name)
-		if rep_start != -1 {
-			rep_end := strings.Index(self.Seminfo[rep_start:], " ")
-			if rep_end == -1 {
-				rep_end = len(self.Seminfo)
+		retName := "代表表記:"
+		repStart := strings.Index(mrph.Seminfo, retName)
+		if repStart != -1 {
+			repEnd := strings.Index(mrph.Seminfo[repStart:], " ")
+			if repEnd == -1 {
+				repEnd = len(mrph.Seminfo)
 			} else {
-				rep_end += rep_start
+				repEnd += repStart
 			}
-			self.Rep = self.Seminfo[rep_start+len(ret_name) : rep_end]
+			mrph.Rep = mrph.Seminfo[repStart+len(retName) : repEnd]
 		} else {
-			self.Rep = self.Genkei + "/" + self.Genkei
+			mrph.Rep = mrph.Genkei + "/" + mrph.Genkei
 		}
 
-		feature_start := seminfo_start_pos + 1 + seminfo_char_num + 2
-		if feature_start < len(rest) {
-			self.Features = GetFeatures(rest[feature_start:])
+		featureStart := seminfoStartPos + 1 + seminfoCharNum + 2
+		if featureStart < len(rest) {
+			mrph.Features = GetFeatures(rest[featureStart:])
 		}
 
 	}
 
-	return self, err
+	return mrph, err
 }

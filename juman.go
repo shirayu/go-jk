@@ -1,20 +1,23 @@
 package jk
 
+//Juman is a client to execute juman command
 type Juman struct {
 	*CommandClient
 }
 
+//NewJuman creates a new Juman
 func NewJuman(path string) (*Juman, error) {
 	client, err := NewCommandClient(path)
 	if err != nil {
 		return nil, err
 	}
-	self := &Juman{client}
-	return self, err
+	jmn := &Juman{client}
+	return jmn, err
 }
 
-func (self *Juman) Parse(query string) (*Sentence, error) {
-	lines, err := self.RawParse(query)
+//Parse returns a Sentence to parse the given sentence
+func (jmn *Juman) Parse(query string) (*Sentence, error) {
+	lines, err := jmn.RawParse(query)
 	if err != nil {
 		return nil, err
 	}

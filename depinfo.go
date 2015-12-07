@@ -6,12 +6,14 @@ import (
 	"strings"
 )
 
+//DependencyInfo handles dependency information of bunsetsu or basic phrases
 type DependencyInfo struct {
 	To       int
 	DepType  rune
 	Features Features
 }
 
+//NewDependencyInfo creates a new DependencyInfo with the given line
 func NewDependencyInfo(line string) (*DependencyInfo, error) {
 	sep1 := strings.IndexRune(line, ' ')
 	if sep1 != 1 {
@@ -23,27 +25,29 @@ func NewDependencyInfo(line string) (*DependencyInfo, error) {
 	}
 	sep2 += sep1 + 1
 
-	self := new(DependencyInfo)
+	depi := new(DependencyInfo)
 	var err error
-	self.To, err = strconv.Atoi(line[sep1+1 : sep2-1])
+	depi.To, err = strconv.Atoi(line[sep1+1 : sep2-1])
 	if err != nil {
 		return nil, err
 	}
-	self.DepType = rune(line[sep2-1])
+	depi.DepType = rune(line[sep2-1])
 
-	self.Features = GetFeatures(line[sep2+1:])
+	depi.Features = GetFeatures(line[sep2+1:])
 
-	return self, err
+	return depi, err
 }
 
+//DependencyInfos is a slice of DependencyInfo
 type DependencyInfos []*DependencyInfo
 
-func (self *DependencyInfo) GetPredRep() string {
-	pname, ok := self.Features["用言代表表記"]
+//GetPredRep returns the "rep" for the DependencyInfo
+func (depi *DependencyInfo) GetPredRep() string {
+	pname, ok := depi.Features["用言代表表記"]
 	if !ok {
 		return ""
 	}
-	vtype, ok := self.Features["用言"]
+	vtype, ok := depi.Features["用言"]
 	if !ok {
 		return ""
 	}

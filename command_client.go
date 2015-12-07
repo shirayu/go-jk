@@ -7,32 +7,35 @@ import (
 	"os/exec"
 )
 
+//CommandClient execute the given command
 type CommandClient struct {
 	cmd    *exec.Cmd
 	stdin  io.WriteCloser
 	stdout io.ReadCloser
 }
 
+//NewCommandClient creates a new CommandClient
 func NewCommandClient(command string, options ...string) (*CommandClient, error) {
 	cmd := exec.Command(command, options...)
-	self := CommandClient{cmd: cmd}
+	cmdcl := CommandClient{cmd: cmd}
 	var err error
-	if self.stdin, err = self.cmd.StdinPipe(); err != nil {
+	if cmdcl.stdin, err = cmdcl.cmd.StdinPipe(); err != nil {
 		return nil, err
 	}
-	if self.stdout, err = self.cmd.StdoutPipe(); err != nil {
+	if cmdcl.stdout, err = cmdcl.cmd.StdoutPipe(); err != nil {
 		return nil, err
 	}
 	err = cmd.Start()
-	return &self, err
+	return &cmdcl, err
 }
 
-func (self *CommandClient) RawParse(query string) (string, error) {
-	io.WriteString(self.stdin, query)
-	io.WriteString(self.stdin, "\n")
+//RawParse returns a single raw result which ends with "EOS" for the given sentence
+func (cmdcl *CommandClient) RawParse(query string) (string, error) {
+	io.WriteString(cmdcl.stdin, query)
+	io.WriteString(cmdcl.stdin, "\n")
 
 	var buf bytes.Buffer
-	scanner := bufio.NewScanner(self.stdout)
+	scanner := bufio.NewScanner(cmdcl.stdout)
 	for scanner.Scan() {
 		line := scanner.Text()
 		if line == "EOS" {

@@ -1,20 +1,23 @@
 package jk
 
+//KnpSocketClient is a client to a communicete knp server
 type KnpSocketClient struct {
 	*SocketClient
 }
 
+//NewKnpSocketClient creates a new KnpSocketClient
 func NewKnpSocketClient(address string) (*KnpSocketClient, error) {
 	client, err := NewSocketClient(address, "RUN -normal -tab\n")
 	if err != nil {
 		return nil, err
 	}
-	self := &KnpSocketClient{client}
-	return self, err
+	knpsc := &KnpSocketClient{client}
+	return knpsc, err
 }
 
-func (self *KnpSocketClient) Parse(juman_lines string) (*Sentence, error) {
-	lines, err := self.RawParse(juman_lines)
+//Parse returns a Sentence to parse the given sentence
+func (knpsc *KnpSocketClient) Parse(jumanLines string) (*Sentence, error) {
+	lines, err := knpsc.RawParse(jumanLines)
 	if err != nil {
 		return nil, err
 	}
