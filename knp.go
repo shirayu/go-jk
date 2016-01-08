@@ -7,7 +7,13 @@ type Knp struct {
 
 //NewKnp creates a new Knp
 func NewKnp(path string, options ...string) (*Knp, error) {
-	client, err := NewCommandClient(path, "-tab")
+	t := make([]string, len(options)+1)
+	for i, opt := range options {
+		t[i] = opt
+	}
+	t[len(options)] = "-tab"
+
+	client, err := NewCommandClient(path, t...)
 	if err != nil {
 		return nil, err
 	}

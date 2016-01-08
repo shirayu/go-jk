@@ -6,8 +6,8 @@ type Juman struct {
 }
 
 //NewJuman creates a new Juman
-func NewJuman(path string) (*Juman, error) {
-	client, err := NewCommandClient(path)
+func NewJuman(path string, options ...string) (*Juman, error) {
+	client, err := NewCommandClient(path, options...)
 	if err != nil {
 		return nil, err
 	}
