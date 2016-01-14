@@ -5,6 +5,7 @@ import (
 	"bytes"
 	"io"
 	"os/exec"
+	"sync"
 )
 
 //CommandClient execute the given command
@@ -12,6 +13,7 @@ type CommandClient struct {
 	cmd    *exec.Cmd
 	stdin  io.WriteCloser
 	stdout io.ReadCloser
+	mutex  *sync.Mutex
 }
 
 //NewCommandClient creates a new CommandClient
@@ -26,6 +28,7 @@ func NewCommandClient(command string, options ...string) (*CommandClient, error)
 		return nil, err
 	}
 	err = cmd.Start()
+	cmdcl.mutex = new(sync.Mutex)
 	return &cmdcl, err
 }
 
@@ -35,6 +38,8 @@ func (cmdcl *CommandClient) RawParse(query string) (string, error) {
 	io.WriteString(cmdcl.stdin, "\n")
 
 	var buf bytes.Buffer
+	cmdcl.mutex.Lock()
+	defer cmdcl.mutex.Unlock()
 	scanner := bufio.NewScanner(cmdcl.stdout)
 	for scanner.Scan() {
 		line := scanner.Text()

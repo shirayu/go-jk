@@ -7,6 +7,7 @@ import (
 	"net"
 	"net/textproto"
 	"strings"
+	"sync"
 )
 
 //SocketClient communicates to a server with a socket
@@ -14,6 +15,7 @@ type SocketClient struct {
 	address    string
 	connection net.Conn
 	tp         *textproto.Reader
+	mutex      *sync.Mutex
 }
 
 //NewSocketClient creats a SocketClient
@@ -38,6 +40,8 @@ func NewSocketClient(address string, option string) (*SocketClient, error) {
 			break
 		}
 	}
+
+	scc.mutex = new(sync.Mutex)
 	return scc, err
 }
 
@@ -46,6 +50,9 @@ func (scc *SocketClient) RawParse(query string) (string, error) {
 	fmt.Fprintf(scc.connection, "%s\n", query)
 
 	var buf bytes.Buffer
+	scc.mutex.Lock()
+	defer scc.mutex.Unlock()
+
 	for {
 		line, err := scc.tp.ReadLine()
 		if err != nil {
