@@ -65,7 +65,7 @@ func (s *KnpTestServer) HandleConn(client net.Conn) {
 		}
 
 		if string(line) == "EOS\n" {
-			fmt.Fprintf(client, knpOutputSample)
+			fmt.Fprintf(client, sampleKnpOutput)
 			buf.Reset()
 		}
 	}
@@ -89,7 +89,7 @@ func TestKnp(t *testing.T) {
 		t.Fatal("Error to open the knp socket: ", err)
 	}
 
-	retLines, err := knp.RawParse(jumanInputSample)
+	retLines, err := knp.RawParse(sampleJumanInput)
 	if err != nil {
 		t.Errorf("Error to parse [%v]", err)
 	}
@@ -97,7 +97,7 @@ func TestKnp(t *testing.T) {
 		t.Errorf("expceted length is 9 but %d", c)
 	}
 
-	s, err := knp.Parse(jumanInputSample)
+	s, err := knp.Parse(sampleJumanInput)
 	if err != nil {
 		t.Errorf("Error to parse [%v]", err)
 	}

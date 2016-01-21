@@ -44,7 +44,7 @@ func TestKnpSentence(t *testing.T) {
 			Features: GetFeatures(`<代表表記:られる/られる><正規化代表表記:られる/られる><かな漢字><ひらがな><活用語><文末><表現文末><付属>`)},
 	}
 
-	s, err := NewSentence(knpOutputSample)
+	s, err := NewSentence(sampleKnpOutput)
 	if err != nil {
 		t.Fatal(err)
 	}

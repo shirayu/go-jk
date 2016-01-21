@@ -58,8 +58,8 @@ func (s *JumanTestServer) HandleConn(client net.Conn) {
 		}
 		if strings.HasPrefix(string(line), "RUN") {
 			fmt.Fprintf(client, "OK\n")
-		} else if string(line) == inputSample+"\n" {
-			fmt.Fprintf(client, jumanInputSample+"\n")
+		} else if string(line) == sampleInput+"\n" {
+			fmt.Fprintf(client, sampleJumanInput+"\n")
 		} else {
 			fmt.Fprintf(client, "Un expected input\n")
 			fmt.Fprintf(client, "EOS\n")
@@ -85,7 +85,7 @@ func TestJuman(t *testing.T) {
 		t.Fatal("Error to open the juman socket: ", err)
 	}
 
-	retLines, err := juman.RawParse(inputSample)
+	retLines, err := juman.RawParse(sampleInput)
 	if err != nil {
 		t.Errorf("Error to parse [%v]", err)
 	}
@@ -93,7 +93,7 @@ func TestJuman(t *testing.T) {
 		t.Errorf("expceted length is 4 but %d", c)
 	}
 
-	s, err := juman.Parse(inputSample)
+	s, err := juman.Parse(sampleInput)
 	if err != nil {
 		t.Errorf("Error to parse [%v]", err)
 	}
