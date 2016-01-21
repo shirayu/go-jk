@@ -8,7 +8,7 @@ import (
 type Features map[string]string
 
 //GetFeatures returns features for the given feature expression
-func GetFeatures(line string, splitter rune, firstCharOffset int) Features {
+func getFeatures(line string, splitter rune, firstCharOffset int) Features {
 	num := strings.Count(line, string(splitter))
 	ret := make(Features, num)
 

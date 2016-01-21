@@ -6,8 +6,8 @@ import (
 
 func TestGetFeatures(t *testing.T) {
 	sysouts := []Features{
-		GetFeatures(sampleFeature, '>', 1),
-		GetFeatures(sampleFeature2, '|', 0),
+		getFeatures(sampleFeature, '>', 1),
+		getFeatures(sampleFeature2, '|', 0),
 	}
 	gold := Features{
 		`代表表記`:    `構文/こうぶん`,

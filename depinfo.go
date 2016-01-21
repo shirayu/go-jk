@@ -33,7 +33,7 @@ func NewDependencyInfo(line string) (*DependencyInfo, error) {
 	}
 	depi.DepType = rune(line[sep2-1])
 
-	depi.Features = GetFeatures(line[sep2+1:], '>', 1)
+	depi.Features = getFeatures(line[sep2+1:], '>', 1)
 
 	return depi, err
 }
