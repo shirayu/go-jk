@@ -20,7 +20,7 @@ func TestDependencyInfo(t *testing.T) {
 	if dp.DepType != 'D' {
 		t.Errorf("DepType error")
 	}
-	if !reflect.DeepEqual(dp.Features, GetFeatures(f)) {
+	if !reflect.DeepEqual(dp.Features, GetFeatures(f, '>', 1)) {
 		t.Errorf("Features error")
 	}
 

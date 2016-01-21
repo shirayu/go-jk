@@ -5,7 +5,10 @@ import (
 )
 
 func TestGetFeatures(t *testing.T) {
-	kvs := GetFeatures(sampleFeature)
+	sysouts := []Features{
+		GetFeatures(sampleFeature, '>', 1),
+		GetFeatures(sampleFeature2, '|', 0),
+	}
 	gold := Features{
 		`代表表記`:    `構文/こうぶん`,
 		`カテゴリ`:    `抽象物`,
@@ -13,15 +16,18 @@ func TestGetFeatures(t *testing.T) {
 		`漢字`:      ``,
 	}
 
-	if len(kvs) != len(gold) {
-		t.Errorf("Size error")
-	}
-	for k, gv := range gold {
-		sysv, ok := kvs[k]
-		if !ok {
-			t.Errorf("For key [%v], expected [%v] but got nothing", k, gv)
-		} else if gv != sysv {
-			t.Errorf("For key [%v], expected [%v] but got [%v]", k, gv, sysv)
+	for i, sysout := range sysouts {
+		t.Logf("%v", sysout)
+		if len(sysout) != len(gold) {
+			t.Errorf("Size error: Expected %d but %d (in loop %d)", len(gold), len(sysout), i)
+		}
+		for k, gv := range gold {
+			sysv, ok := sysout[k]
+			if !ok {
+				t.Errorf("For key [%v], expected [%v] but got nothing", k, gv)
+			} else if gv != sysv {
+				t.Errorf("For key [%v], expected [%v] but got [%v]", k, gv, sysv)
+			}
 		}
 	}
 

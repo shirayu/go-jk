@@ -86,7 +86,7 @@ func NewMorpheme(line string) (*Morpheme, error) {
 
 		featureStart := seminfoStartPos + 1 + seminfoCharNum + 2
 		if featureStart < len(rest) {
-			mrph.Features = GetFeatures(rest[featureStart:])
+			mrph.Features = GetFeatures(rest[featureStart:], '>', 1)
 		}
 
 	}
