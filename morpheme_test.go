@@ -25,14 +25,14 @@ func TestMorpheme(t *testing.T) {
 }
 
 func TestMorphemeKNP(t *testing.T) {
-	line := "構文 こうぶん 構文 名詞 6 普通名詞 1 * 0 * 0 \"代表表記:構文/こうぶん カテゴリ:抽象物\" <代表表記:構文/こうぶん><カテゴリ:抽象物><正規化代表表記:構文/こうぶん><漢字>"
+	line := "構文 こうぶん 構文 名詞 6 普通名詞 1 * 0 * 0 \"代表表記:構文/こうぶん カテゴリ:抽象物\" " + featureSample
 	m, err := NewMorpheme(line)
 
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	gf := GetFeatures(`<代表表記:構文/こうぶん><カテゴリ:抽象物><正規化代表表記:構文/こうぶん><漢字>`)
+	gf := GetFeatures(featureSample)
 	if m.Midashi != "構文" {
 		t.Errorf("Midashi Error\n")
 	} else if m.Katsuyou2ID != 0 {
