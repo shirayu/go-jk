@@ -5,7 +5,7 @@ import (
 )
 
 func TestGetFeatures(t *testing.T) {
-	kvs := GetFeatures(featureSample)
+	kvs := GetFeatures(sampleFeature)
 	gold := Features{
 		`代表表記`:    `構文/こうぶん`,
 		`カテゴリ`:    `抽象物`,
