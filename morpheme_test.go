@@ -32,7 +32,7 @@ func TestMorphemeKNP(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	gf := GetFeatures(sampleFeature)
+	gf := getFeatures(sampleFeature, '>', 1)
 	if m.Midashi != "構文" {
 		t.Errorf("Midashi Error\n")
 	} else if m.Katsuyou2ID != 0 {
