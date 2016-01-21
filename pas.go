@@ -34,15 +34,15 @@ func NewPas(line string, knpstyle bool) (*Pas, error) {
 }
 
 func parseKnpStylePas(val string) (*Pas, error) {
+	if strings.Count(val, ":") < 2 {
+		return nil, nil
+	}
+
 	pas := new(Pas)
 	pas.Args = ArgMap{}
 	c0 := strings.Index(val, ":")
 	c1 := c0 + 1 + strings.Index(val[c0+1:], ":")
 	pas.Cfid = val[:c0] + ":" + val[c0+1:c1]
-
-	if strings.Count(val, ":") < 2 {
-		return nil, nil
-	}
 
 	ks := strings.Split(val[c1+1:], ";")
 	for _, k := range ks {
