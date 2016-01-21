@@ -11,6 +11,7 @@ type DependencyInfo struct {
 	To       int
 	DepType  rune
 	Features Features
+	Pas      *Pas
 }
 
 //NewDependencyInfo creates a new DependencyInfo with the given line
@@ -34,6 +35,9 @@ func NewDependencyInfo(line string) (*DependencyInfo, error) {
 	depi.DepType = rune(line[sep2-1])
 
 	depi.Features = getFeatures(line[sep2+1:], '>', 1)
+	if pasresult, ok := depi.Features["格解析結果"]; ok {
+		depi.Pas, err = NewPas(pasresult, true)
+	}
 
 	return depi, err
 }
