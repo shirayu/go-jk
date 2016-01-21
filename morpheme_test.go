@@ -5,29 +5,6 @@ import (
 	"testing"
 )
 
-func TestGetFeatures(t *testing.T) {
-	kvs := GetFeatures(`<代表表記:構文/こうぶん><カテゴリ:抽象物><正規化代表表記:構文/こうぶん><漢字>`)
-	gold := Features{
-		`代表表記`:    `構文/こうぶん`,
-		`カテゴリ`:    `抽象物`,
-		`正規化代表表記`: `構文/こうぶん`,
-		`漢字`:      ``,
-	}
-
-	if len(kvs) != len(gold) {
-		t.Errorf("Size error")
-	}
-	for k, gv := range gold {
-		sysv, ok := kvs[k]
-		if !ok {
-			t.Errorf("For key [%v], expected [%v] but got nothing", k, gv)
-		} else if gv != sysv {
-			t.Errorf("For key [%v], expected [%v] but got [%v]", k, gv, sysv)
-		}
-	}
-
-}
-
 func TestMorpheme(t *testing.T) {
 	line := "探して さがして 探す 動詞 2 * 0 子音動詞サ行 5 タ系連用テ形 14 \"代表表記:探す/さがす\""
 	m, err := NewMorpheme(line)
