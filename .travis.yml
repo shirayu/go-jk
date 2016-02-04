@@ -4,19 +4,21 @@ go:
     - tip
 
 before_install:
-    - go get github.com/axw/gocov/gocov
-    - go get github.com/mattn/goveralls
     - go get golang.org/x/tools/cmd/cover
     - go get golang.org/x/tools/cmd/vet
     - go get github.com/golang/lint/golint
+    - pip install --user codecov
     - go get github.com/lestrrat/go-tcptest
 
 install:
-    - go get -d -v ./...
+    - go get -v ./...
     - go vet ./...
     - test -z "$($HOME/gopath/bin/golint ./... | tee /dev/stderr)"
     - go build -v ./...
 
 script:
-    - $HOME/gopath/bin/goveralls -service=travis-ci
+    - go test -coverprofile=coverage.txt -covermode=atomic
+
+after_success:
+      - codecov
 
