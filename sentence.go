@@ -11,6 +11,7 @@ type Morphemes []*Morpheme
 //Sentence includes elements of a sentence
 type Sentence struct {
 	Morphemes
+	ID           string
 	Bunsetsus    DependencyInfos
 	BasicPhrases DependencyInfos
 	comment      string
@@ -26,6 +27,15 @@ func NewSentence(lines []string) (*Sentence, error) {
 
 		if strings.HasPrefix(line, "#") {
 			sent.comment += line
+			if strings.HasPrefix(line, "# S-ID:") {
+				tail := line[7:]
+				end := strings.Index(tail, " ")
+				if end < 0 {
+					sent.ID = tail
+				} else {
+					sent.ID = tail[:end]
+				}
+			}
 		} else if strings.HasPrefix(line, "EOS") {
 			break
 		} else if strings.HasPrefix(line, "@") {

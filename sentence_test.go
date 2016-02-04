@@ -54,6 +54,10 @@ func TestKnpSentence(t *testing.T) {
 		t.Errorf("expeceted length of morphemes is 4, but %d\n", s.Len())
 	}
 
+	if s.ID != sampleID {
+		t.Errorf("expeceted ID is %s, but got %s", sampleID, s.ID)
+	}
+
 	for i, sys := range s.Morphemes {
 		gold := goldMorphemes[i]
 		if gold == nil {
