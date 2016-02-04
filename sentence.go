@@ -3,6 +3,7 @@ package jk
 import (
 	"errors"
 	"strings"
+	"unicode/utf8"
 )
 
 //Morphemes is a slice of Morpheme
@@ -11,10 +12,12 @@ type Morphemes []*Morpheme
 //Sentence includes elements of a sentence
 type Sentence struct {
 	Morphemes
-	ID           string
-	Bunsetsus    DependencyInfos
-	BasicPhrases DependencyInfos
-	comment      string
+	ID                   string
+	Bunsetsus            DependencyInfos
+	BasicPhrases         DependencyInfos
+	comment              string
+	MorphemePositions    []int
+	BasicPhrasePositions []int
 }
 
 //NewSentence creats a sentence with the given text
@@ -22,7 +25,10 @@ func NewSentence(lines []string) (*Sentence, error) {
 	sent := new(Sentence)
 	sent.Bunsetsus = DependencyInfos{}
 	sent.BasicPhrases = DependencyInfos{}
+	sent.MorphemePositions = []int{0}
+	sent.BasicPhrasePositions = []int{}
 
+	length := 0
 	for _, line := range lines {
 
 		if strings.HasPrefix(line, "#") {
@@ -64,14 +70,18 @@ func NewSentence(lines []string) (*Sentence, error) {
 				return sent, err
 			}
 			sent.BasicPhrases = append(sent.BasicPhrases, di)
+			sent.BasicPhrasePositions = append(sent.BasicPhrasePositions, length)
 		} else {
 			m, err := NewMorpheme(line)
 			if err != nil {
 				return sent, err
 			}
 			sent.Morphemes = append(sent.Morphemes, m)
+			length += utf8.RuneCountInString(m.Midashi)
+			sent.MorphemePositions = append(sent.MorphemePositions, length)
 		}
 	}
+	sent.BasicPhrasePositions = append(sent.BasicPhrasePositions, length)
 
 	return sent, nil
 }

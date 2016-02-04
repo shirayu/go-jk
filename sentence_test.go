@@ -96,4 +96,11 @@ func TestKnpSentence(t *testing.T) {
 		t.Errorf("Features error")
 	}
 
+	if sys := s.MorphemePositions; !reflect.DeepEqual(sys, []int{0, 2, 3, 5, 8}) {
+		t.Errorf("Got %v", sys)
+	}
+	if sys := s.BasicPhrasePositions; !reflect.DeepEqual(sys, []int{0, 3, 8}) {
+		t.Errorf("Got %v", sys)
+	}
+
 }
