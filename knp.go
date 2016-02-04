@@ -1,5 +1,7 @@
 package jk
 
+import "strings"
+
 //Knp is a client to execute knp command
 type Knp struct {
 	*CommandClient
@@ -27,6 +29,6 @@ func (knp *Knp) Parse(query string) (*Sentence, error) {
 	if err != nil {
 		return nil, err
 	}
-	s, err := NewSentence(lines)
+	s, err := NewSentence(strings.Split(lines, "\n"))
 	return s, err
 }

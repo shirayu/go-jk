@@ -1,5 +1,7 @@
 package jk
 
+import "strings"
+
 //JumanSocketClient is a client to a communicete juman server
 type JumanSocketClient struct {
 	*SocketClient
@@ -21,6 +23,6 @@ func (jsc *JumanSocketClient) Parse(query string) (*Sentence, error) {
 	if err != nil {
 		return nil, err
 	}
-	s, err := NewSentence(lines)
+	s, err := NewSentence(strings.Split(lines, "\n"))
 	return s, err
 }

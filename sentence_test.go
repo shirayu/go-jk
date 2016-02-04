@@ -2,6 +2,7 @@ package jk
 
 import (
 	"reflect"
+	"strings"
 	"testing"
 )
 
@@ -9,7 +10,7 @@ func TestSentence(t *testing.T) {
 	linesString := `みて みて みる 動詞 2 * 0 母音動詞 1 タ系連用テ形 14 "代表表記:見る/みる 補文ト 自他動詞:自:見える/みえる"
 @ みて みて みる 動詞 2 * 0 母音動詞 1 タ系連用テ形 14 "代表表記:診る/みる 補文ト ドメイン:健康・医学"
 いる いる いる 接尾辞 14 動詞性接尾辞 7 母音動詞 1 基本形 2 "代表表記:いる/いる"`
-	s, err := NewSentence(linesString)
+	s, err := NewSentence(strings.Split(linesString, "\n"))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -44,7 +45,7 @@ func TestKnpSentence(t *testing.T) {
 			Features: getFeatures(`<代表表記:られる/られる><正規化代表表記:られる/られる><かな漢字><ひらがな><活用語><文末><表現文末><付属>`, '>', 1)},
 	}
 
-	s, err := NewSentence(sampleKnpOutput)
+	s, err := NewSentence(strings.Split(sampleKnpOutput, "\n"))
 	if err != nil {
 		t.Fatal(err)
 	}

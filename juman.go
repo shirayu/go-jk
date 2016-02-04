@@ -1,5 +1,7 @@
 package jk
 
+import "strings"
+
 //Juman is a client to execute juman command
 type Juman struct {
 	*CommandClient
@@ -21,6 +23,6 @@ func (jmn *Juman) Parse(query string) (*Sentence, error) {
 	if err != nil {
 		return nil, err
 	}
-	s, err := NewSentence(lines)
+	s, err := NewSentence(strings.Split(lines, "\n"))
 	return s, err
 }

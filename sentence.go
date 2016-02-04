@@ -17,12 +17,12 @@ type Sentence struct {
 }
 
 //NewSentence creats a sentence with the given text
-func NewSentence(lines string) (*Sentence, error) {
+func NewSentence(lines []string) (*Sentence, error) {
 	sent := new(Sentence)
 	sent.Bunsetsus = DependencyInfos{}
 	sent.BasicPhrases = DependencyInfos{}
 
-	for _, line := range strings.Split(lines, "\n") {
+	for _, line := range lines {
 
 		if strings.HasPrefix(line, "#") {
 			sent.comment += line

@@ -1,5 +1,7 @@
 package jk
 
+import "strings"
+
 //KnpSocketClient is a client to a communicete knp server
 type KnpSocketClient struct {
 	*SocketClient
@@ -21,6 +23,6 @@ func (knpsc *KnpSocketClient) Parse(jumanLines string) (*Sentence, error) {
 	if err != nil {
 		return nil, err
 	}
-	s, err := NewSentence(lines)
+	s, err := NewSentence(strings.Split(lines, "\n"))
 	return s, err
 }
