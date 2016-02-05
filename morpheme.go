@@ -7,21 +7,21 @@ import (
 
 //Morpheme is a morpheme
 type Morpheme struct {
-	Doukeis     Morphemes
-	Midashi     string
-	Yomi        string
-	Genkei      string
-	Hinshi      string
-	HinshiID    int
-	Bunrui      string
-	BunruiID    int
-	Katsuyou1   string
-	Katsuyou1ID int
-	Katsuyou2   string
-	Katsuyou2ID int
-	Seminfo     string
-	Rep         string
-	Features    Features
+	Doukeis       Morphemes
+	Surface       string //Midashi
+	Pronunciation string //Yomi
+	RootForm      string //Genkei
+	Pos0          string //Hinshi
+	Pos0ID        int    //HinshiID
+	Pos1          string //Bunrui
+	Pos1ID        int    //BunruiID
+	CType         string //Katsuyou1
+	CTypeID       int    //Katsuyou1ID
+	CForm         string //Katsuyou2
+	CFormID       int    //Katsuyou2ID
+	Seminfo       string //Seminfo
+	Rep           string //Rep
+	Features      Features
 }
 
 //NewMorpheme returns a morpheme for the given line
@@ -29,43 +29,43 @@ func NewMorpheme(line string) (*Morpheme, error) {
 	mrph := new(Morpheme)
 	items := strings.SplitN(line, " ", 12)
 
-	mrph.Midashi = items[0]
-	mrph.Yomi = items[1]
-	mrph.Genkei = items[2]
-	mrph.Hinshi = items[3]
+	mrph.Surface = items[0]
+	mrph.Pronunciation = items[1]
+	mrph.RootForm = items[2]
+	mrph.Pos0 = items[3]
 
 	hinshiID, err := strconv.Atoi(items[4])
 	if err != nil {
 		return nil, err
 	}
-	mrph.HinshiID = hinshiID
+	mrph.Pos0ID = hinshiID
 
-	mrph.Bunrui = items[5]
+	mrph.Pos1 = items[5]
 	bunruiID, err := strconv.Atoi(items[6])
 	if err != nil {
 		return nil, err
 	}
-	mrph.BunruiID = bunruiID
+	mrph.Pos1ID = bunruiID
 
-	mrph.Katsuyou1 = items[7]
+	mrph.CType = items[7]
 	katsuyo1ID, err := strconv.Atoi(items[8])
 	if err != nil {
 		return nil, err
 	}
-	mrph.Katsuyou1ID = katsuyo1ID
+	mrph.CTypeID = katsuyo1ID
 
-	mrph.Katsuyou2 = items[9]
+	mrph.CForm = items[9]
 	katsuyo2ID, err := strconv.Atoi(items[10])
 	if err != nil {
 		return nil, err
 	}
-	mrph.Katsuyou2ID = katsuyo2ID
+	mrph.CFormID = katsuyo2ID
 
 	rest := items[11]
 	seminfoStartPos := strings.Index(rest, "\"")
 	if seminfoStartPos == -1 {
 		mrph.Seminfo = ""
-		mrph.Rep = mrph.Genkei + "/" + mrph.Genkei
+		mrph.Rep = mrph.RootForm + "/" + mrph.RootForm
 	} else {
 		seminfoCharNum := strings.Index(rest[seminfoStartPos+1:], "\"")
 		mrph.Seminfo = rest[seminfoStartPos+1 : seminfoStartPos+1+seminfoCharNum]
@@ -81,7 +81,7 @@ func NewMorpheme(line string) (*Morpheme, error) {
 			}
 			mrph.Rep = mrph.Seminfo[repStart+len(retName) : repEnd]
 		} else {
-			mrph.Rep = mrph.Genkei + "/" + mrph.Genkei
+			mrph.Rep = mrph.RootForm + "/" + mrph.RootForm
 		}
 
 		featureStart := seminfoStartPos + 1 + seminfoCharNum + 2

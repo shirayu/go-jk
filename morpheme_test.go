@@ -13,9 +13,9 @@ func TestMorpheme(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if m.Midashi != "探して" {
+	if m.Surface != "探して" {
 		t.Errorf("Midashi Error\n")
-	} else if m.Katsuyou2ID != 14 {
+	} else if m.CFormID != 14 {
 		t.Errorf("Katsuyou2ID Error\n")
 	} else if m.Seminfo != "代表表記:探す/さがす" {
 		t.Errorf("Seminfo_id Error\n")
@@ -33,9 +33,9 @@ func TestMorphemeKNP(t *testing.T) {
 	}
 
 	gf := getFeatures(sampleFeature, '>', 1)
-	if m.Midashi != "構文" {
+	if m.Surface != "構文" {
 		t.Errorf("Midashi Error\n")
-	} else if m.Katsuyou2ID != 0 {
+	} else if m.CFormID != 0 {
 		t.Errorf("Katsuyou2ID Error\n")
 	} else if m.Rep != "構文/こうぶん" {
 		t.Errorf("Rep Error\n")

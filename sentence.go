@@ -79,7 +79,7 @@ func NewSentence(lines []string) (*Sentence, error) {
 				return sent, err
 			}
 			sent.Morphemes = append(sent.Morphemes, m)
-			length += utf8.RuneCountInString(m.Midashi)
+			length += utf8.RuneCountInString(m.Surface)
 			sent.MorphemePositions = append(sent.MorphemePositions, length)
 		}
 	}
