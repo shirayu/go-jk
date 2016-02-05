@@ -12,12 +12,13 @@ type Morphemes []*Morpheme
 //Sentence includes elements of a sentence
 type Sentence struct {
 	Morphemes
-	ID                   string
-	Bunsetsus            DependencyInfos
-	BasicPhrases         DependencyInfos
-	comment              string
-	MorphemePositions    []int
-	BasicPhrasePositions []int
+	ID                        string
+	Bunsetsus                 DependencyInfos
+	BasicPhrases              DependencyInfos
+	comment                   string
+	MorphemePositions         []int
+	BasicPhrasePositions      []int
+	BasicPhraseMorphemeIndexs []int
 }
 
 //NewSentence creats a sentence with the given text
@@ -71,6 +72,7 @@ func NewSentence(lines []string) (*Sentence, error) {
 			}
 			sent.BasicPhrases = append(sent.BasicPhrases, di)
 			sent.BasicPhrasePositions = append(sent.BasicPhrasePositions, length)
+			sent.BasicPhraseMorphemeIndexs = append(sent.BasicPhraseMorphemeIndexs, len(sent.Morphemes))
 		} else {
 			m, err := NewMorpheme(line)
 			if err != nil {
@@ -82,13 +84,19 @@ func NewSentence(lines []string) (*Sentence, error) {
 		}
 	}
 	sent.BasicPhrasePositions = append(sent.BasicPhrasePositions, length)
+	sent.BasicPhraseMorphemeIndexs = append(sent.BasicPhraseMorphemeIndexs, len(sent.Morphemes))
 
 	return sent, nil
 }
 
 //GetMorphemes returns morpheme of the sentence
-func (sent *Sentence) GetMorphemes() Morphemes {
-	return sent.Morphemes
+func (sent *Sentence) GetMorphemes(bpIndex int) Morphemes {
+	if bpIndex < 0 || bpIndex >= len(sent.BasicPhrasePositions) {
+		return nil
+	}
+	start := sent.BasicPhraseMorphemeIndexs[bpIndex]
+	end := sent.BasicPhraseMorphemeIndexs[bpIndex+1]
+	return sent.Morphemes[start:end]
 }
 
 //Len returns the number of the morphemes

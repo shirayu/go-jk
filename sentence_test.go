@@ -103,4 +103,15 @@ func TestKnpSentence(t *testing.T) {
 		t.Errorf("Got %v", sys)
 	}
 
+	if sys := s.BasicPhraseMorphemeIndexs; !reflect.DeepEqual(sys, []int{0, 2, 4}) {
+		t.Errorf("Got %v", sys)
+	}
+	if sys := s.GetMorphemes(-1); sys != nil {
+		t.Errorf("Got %v", sys)
+	} else if sys := s.GetMorphemes(0); sys == nil {
+		t.Errorf("Got %v", sys)
+	} else if sys := s.GetMorphemes(9999); sys != nil {
+		t.Errorf("Got %v", sys)
+	}
+
 }
