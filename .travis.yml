@@ -7,6 +7,7 @@ before_install:
     - go get golang.org/x/tools/cmd/cover
     - go get golang.org/x/tools/cmd/vet
     - go get github.com/golang/lint/golint
+    - go get github.com/fzipp/gocyclo
     - pip install --user codecov
     - go get github.com/lestrrat/go-tcptest
 
@@ -14,6 +15,7 @@ install:
     - go get -v ./...
     - go vet ./...
     - test -z "$($HOME/gopath/bin/golint ./... | tee /dev/stderr)"
+    - gocyclo -over 15 .
     - go build -v ./...
 
 script:
