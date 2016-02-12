@@ -21,6 +21,36 @@ type Sentence struct {
 	BasicPhraseMorphemeIndexs []int
 }
 
+func (sent *Sentence) setComment(line string) {
+	sent.comment += line
+	if strings.HasPrefix(line, "# S-ID:") {
+		tail := line[7:]
+		end := strings.Index(tail, " ")
+		if end < 0 {
+			sent.ID = tail
+		} else {
+			sent.ID = tail[:end]
+		}
+	}
+}
+
+func (sent *Sentence) setDoukei(line string) error {
+	if len(line) < 2 {
+		return errors.New("The length less than 2")
+	}
+	m, err := NewMorpheme(line[2:])
+	if err != nil {
+		return err
+	}
+
+	if len(sent.Morphemes) == 0 {
+		return errors.New("@ comes before some morpheme")
+	}
+	doukeis := &(sent.Morphemes[len(sent.Morphemes)-1].Doukeis)
+	*doukeis = append(*doukeis, m)
+	return nil
+}
+
 //NewSentence creats a sentence with the given text
 func NewSentence(lines []string) (*Sentence, error) {
 	sent := new(Sentence)
@@ -33,32 +63,13 @@ func NewSentence(lines []string) (*Sentence, error) {
 	for _, line := range lines {
 
 		if strings.HasPrefix(line, "#") {
-			sent.comment += line
-			if strings.HasPrefix(line, "# S-ID:") {
-				tail := line[7:]
-				end := strings.Index(tail, " ")
-				if end < 0 {
-					sent.ID = tail
-				} else {
-					sent.ID = tail[:end]
-				}
-			}
+			sent.setComment(line)
 		} else if strings.HasPrefix(line, "EOS") {
 			break
 		} else if strings.HasPrefix(line, "@") {
-			if len(line) < 2 {
+			if err := sent.setDoukei(line); err != nil {
 				return sent, errors.New("The length less than 2")
 			}
-			m, err := NewMorpheme(line[2:])
-			if err != nil {
-				return sent, err
-			}
-
-			if len(sent.Morphemes) == 0 {
-				return sent, errors.New("@ comes before some morpheme")
-			}
-			doukeis := &(sent.Morphemes[len(sent.Morphemes)-1].Doukeis)
-			*doukeis = append(*doukeis, m)
 		} else if strings.HasPrefix(line, "* ") {
 			di, err := NewDependencyInfo(line)
 			if err != nil {
