@@ -86,6 +86,14 @@ func TestKnpSentence(t *testing.T) {
 	if len(s.Bunsetsus) != 2 {
 		t.Errorf("Bunsetsu size error: expeceted %v but got %v", len(s.Bunsetsus), 2)
 	}
+}
+
+func TestKnpSentenceBasicPhrase(t *testing.T) {
+	s, err := NewSentence(strings.Split(sampleKnpOutput, "\n"))
+	if err != nil {
+		t.Fatal(err)
+	}
+
 	if len(s.BasicPhrases) != 2 {
 		t.Errorf("BasicPhrases size error: expeceted %v but got %v", len(s.BasicPhrases), 2)
 	}
@@ -106,6 +114,14 @@ func TestKnpSentence(t *testing.T) {
 	if sys := s.BasicPhraseMorphemeIndexs; !reflect.DeepEqual(sys, []int{0, 2, 4}) {
 		t.Errorf("Got %v", sys)
 	}
+}
+
+func TestKnpSentenceFunc(t *testing.T) {
+	s, err := NewSentence(strings.Split(sampleKnpOutput, "\n"))
+	if err != nil {
+		t.Fatal(err)
+	}
+
 	if sys := s.GetMorphemes(-1); sys != nil {
 		t.Errorf("Got %v", sys)
 	} else if sys := s.GetMorphemes(0); sys == nil {
