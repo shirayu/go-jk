@@ -8,9 +8,9 @@ import (
 
 //Argument represent a single argument
 type Argument struct {
-	Sid string
-	Tid int
-	Rep string
+	Sid string `json:"sid"`
+	Tid int    `json:"tid"`
+	Rep string `json:"rep"`
 }
 
 // Arguments is a slice of Argument
