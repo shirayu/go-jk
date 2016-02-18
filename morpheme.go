@@ -63,9 +63,11 @@ func NewMorpheme(line string) (*Morpheme, error) {
 
 	rest := items[11]
 	seminfoStartPos := strings.Index(rest, "\"")
+	featureStart := 0
 	if seminfoStartPos == -1 {
 		mrph.Seminfo = ""
 		mrph.Rep = mrph.RootForm + "/" + mrph.RootForm
+		featureStart = strings.Index(rest, "<")
 	} else {
 		seminfoCharNum := strings.Index(rest[seminfoStartPos+1:], "\"")
 		mrph.Seminfo = rest[seminfoStartPos+1 : seminfoStartPos+1+seminfoCharNum]
@@ -83,12 +85,11 @@ func NewMorpheme(line string) (*Morpheme, error) {
 		} else {
 			mrph.Rep = mrph.RootForm + "/" + mrph.RootForm
 		}
+		featureStart = seminfoStartPos + 1 + seminfoCharNum + 2
+	}
 
-		featureStart := seminfoStartPos + 1 + seminfoCharNum + 2
-		if featureStart < len(rest) {
-			mrph.Features = getFeatures(rest[featureStart:], '>', 1)
-		}
-
+	if featureStart >= 0 && featureStart < len(rest) {
+		mrph.Features = getFeatures(rest[featureStart:], '>', 1)
 	}
 
 	return mrph, err
