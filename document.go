@@ -10,6 +10,16 @@ type Document struct {
 	Sentences Sentences
 }
 
+//GetSentenceIndex returns the index by SID
+func (doc *Document) GetSentenceIndex(sid string) int {
+	for i, s := range doc.Sentences {
+		if s.ID == sid {
+			return i
+		}
+	}
+	return -1
+}
+
 //NewDocument creates Document
 func NewDocument(scanner *bufio.Scanner) (*Document, error) {
 	lines := []string{}
