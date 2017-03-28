@@ -27,41 +27,57 @@ type Morpheme struct {
 //NewMorpheme returns a morpheme for the given line
 func NewMorpheme(line string) (*Morpheme, error) {
 	mrph := new(Morpheme)
-	items := strings.SplitN(line, " ", 12)
+	if strings.HasPrefix(line, " ") { //for JUMAN blank
+		line = "\\" + line
+	}
 
-	mrph.Surface = items[0]
-	mrph.Pronunciation = items[1]
-	mrph.RootForm = items[2]
-	mrph.Pos0 = items[3]
+	seps := []int{}
+	var prevC rune
+	for i, c := range line {
+		if c == ' ' && prevC != '\\' {
+			seps = append(seps, i)
+			if len(seps) == 3 {
+				break
+			}
+		}
+		prevC = c
+	}
 
-	hinshiID, err := strconv.Atoi(items[4])
+	mrph.Surface = strings.Replace(line[0:seps[0]], "\\ ", " ", -1)
+	mrph.Pronunciation = strings.Replace(line[seps[0]+1:seps[1]], "\\ ", " ", -1)
+	mrph.RootForm = strings.Replace(line[seps[1]+1:seps[2]], "\\ ", " ", -1)
+
+	items := strings.SplitN(line[seps[2]+1:], " ", 9)
+	mrph.Pos0 = items[0]
+
+	hinshiID, err := strconv.Atoi(items[1])
 	if err != nil {
 		return nil, err
 	}
 	mrph.Pos0ID = hinshiID
 
-	mrph.Pos1 = items[5]
-	bunruiID, err := strconv.Atoi(items[6])
+	mrph.Pos1 = items[2]
+	bunruiID, err := strconv.Atoi(items[3])
 	if err != nil {
 		return nil, err
 	}
 	mrph.Pos1ID = bunruiID
 
-	mrph.CType = items[7]
-	katsuyo1ID, err := strconv.Atoi(items[8])
+	mrph.CType = items[4]
+	katsuyo1ID, err := strconv.Atoi(items[5])
 	if err != nil {
 		return nil, err
 	}
 	mrph.CTypeID = katsuyo1ID
 
-	mrph.CForm = items[9]
-	katsuyo2ID, err := strconv.Atoi(items[10])
+	mrph.CForm = items[6]
+	katsuyo2ID, err := strconv.Atoi(items[7])
 	if err != nil {
 		return nil, err
 	}
 	mrph.CFormID = katsuyo2ID
 
-	rest := items[11]
+	rest := items[8]
 	seminfoStartPos := strings.Index(rest, "\"")
 	featureStart := 0
 	if seminfoStartPos == -1 {
