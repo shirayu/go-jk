@@ -165,7 +165,6 @@ func TestMorpheme(t *testing.T) {
 				CFormID:       0,
 				Rep:           " X/ X",
 				Seminfo:       `品詞推定:名詞`,
-				//                 Features:      Features{`品詞推定`: `名詞`}, //TODO fix me
 			},
 		},
 	}

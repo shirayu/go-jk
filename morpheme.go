@@ -8,20 +8,20 @@ import (
 //Morpheme is a morpheme
 type Morpheme struct {
 	Doukeis       Morphemes
-	Surface       string //Midashi
-	Pronunciation string //Yomi
-	RootForm      string //Genkei
-	Pos0          string //Hinshi
-	Pos0ID        int    //HinshiID
-	Pos1          string //Bunrui
-	Pos1ID        int    //BunruiID
-	CType         string //Katsuyou1
-	CTypeID       int    //Katsuyou1ID
-	CForm         string //Katsuyou2
-	CFormID       int    //Katsuyou2ID
-	Seminfo       string //Seminfo
-	Rep           string //Rep
-	Features      Features
+	Surface       string   //Midashi
+	Pronunciation string   //Yomi
+	RootForm      string   //Genkei
+	Pos0          string   //Hinshi
+	Pos0ID        int      //HinshiID
+	Pos1          string   //Bunrui
+	Pos1ID        int      //BunruiID
+	CType         string   //Katsuyou1
+	CTypeID       int      //Katsuyou1ID
+	CForm         string   //Katsuyou2
+	CFormID       int      //Katsuyou2ID
+	Seminfo       string   //Seminfo
+	Rep           string   //Rep
+	Features      Features //Features by KNP
 }
 
 //NewMorpheme returns a morpheme for the given line
