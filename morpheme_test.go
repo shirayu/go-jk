@@ -5,6 +5,54 @@ import (
 	"testing"
 )
 
+func checkMrph(t *testing.T, m, gold *Morpheme) {
+	if m.Surface != gold.Surface {
+		t.Errorf("Surface Error: expected %s but got %s", gold.Surface, m.Surface)
+	}
+	if m.Pronunciation != gold.Pronunciation {
+		t.Errorf("Pronunciation Error: expected %s but got %s", gold.Pronunciation, m.Pronunciation)
+	}
+	if m.RootForm != gold.RootForm {
+		t.Errorf("RootForm Error: expected %s but got %s", gold.RootForm, m.RootForm)
+	}
+	if m.Pos0 != gold.Pos0 {
+		t.Errorf("Pos0 Error: expected %s but got %s", gold.Pos0, m.Pos0)
+	}
+	if m.Pos0ID != gold.Pos0ID {
+		t.Errorf("Pos0ID Error: expected %d but got %d", gold.Pos0ID, m.Pos0ID)
+	}
+	if m.Pos1 != gold.Pos1 {
+		t.Errorf("Pos1 Error: expected %s but got %s", gold.Pos1, m.Pos1)
+	}
+	if m.Pos1ID != gold.Pos1ID {
+		t.Errorf("Pos1ID Error: expected %d but got %d", gold.Pos1ID, m.Pos1ID)
+	}
+	if m.CType != gold.CType {
+		t.Errorf("CType Error: expected %s but got %s", gold.CType, m.CType)
+	}
+	if m.CTypeID != gold.CTypeID {
+		t.Errorf("CTypeID Error: expected %d but got %d", gold.CTypeID, m.CTypeID)
+	}
+	if m.CForm != gold.CForm {
+		t.Errorf("CForm Error: expected %s but got %s", gold.CForm, m.CForm)
+	}
+	if m.CFormID != gold.CFormID {
+		t.Errorf("CFormID Error: expected %d but got %d", gold.CFormID, m.CFormID)
+	}
+	if m.Seminfo != gold.Seminfo {
+		t.Errorf("Seminfo Error: expected %s but got %s", gold.Seminfo, m.Seminfo)
+	}
+	if m.Rep != gold.Rep {
+		t.Errorf("Rep Error: expected %s but got %s", gold.Rep, m.Rep)
+	}
+	if !reflect.DeepEqual(m.Doukeis, gold.Doukeis) {
+		t.Errorf("Doukeis Error: expected %v but got %v", gold.Doukeis, m.Doukeis)
+	}
+	if !reflect.DeepEqual(m.Features, gold.Features) {
+		t.Errorf("Features Error: expected %v but got %v", gold.Features, m.Features)
+	}
+}
+
 func TestMorpheme(t *testing.T) {
 	tests := []struct {
 		line string
@@ -124,56 +172,9 @@ func TestMorpheme(t *testing.T) {
 
 	for _, test := range tests {
 		m, err := NewMorpheme(test.line)
-
 		if err != nil {
 			t.Fatal(err)
 		}
-
-		if m.Surface != test.gold.Surface {
-			t.Errorf("Surface Error: expected %s but got %s", test.gold.Surface, m.Surface)
-		}
-		if m.Pronunciation != test.gold.Pronunciation {
-			t.Errorf("Pronunciation Error: expected %s but got %s", test.gold.Pronunciation, m.Pronunciation)
-		}
-		if m.RootForm != test.gold.RootForm {
-			t.Errorf("RootForm Error: expected %s but got %s", test.gold.RootForm, m.RootForm)
-		}
-		if m.Pos0 != test.gold.Pos0 {
-			t.Errorf("Pos0 Error: expected %s but got %s", test.gold.Pos0, m.Pos0)
-		}
-		if m.Pos0ID != test.gold.Pos0ID {
-			t.Errorf("Pos0ID Error: expected %d but got %d", test.gold.Pos0ID, m.Pos0ID)
-		}
-		if m.Pos1 != test.gold.Pos1 {
-			t.Errorf("Pos1 Error: expected %s but got %s", test.gold.Pos1, m.Pos1)
-		}
-		if m.Pos1ID != test.gold.Pos1ID {
-			t.Errorf("Pos1ID Error: expected %d but got %d", test.gold.Pos1ID, m.Pos1ID)
-		}
-		if m.CType != test.gold.CType {
-			t.Errorf("CType Error: expected %s but got %s", test.gold.CType, m.CType)
-		}
-		if m.CTypeID != test.gold.CTypeID {
-			t.Errorf("CTypeID Error: expected %d but got %d", test.gold.CTypeID, m.CTypeID)
-		}
-		if m.CForm != test.gold.CForm {
-			t.Errorf("CForm Error: expected %s but got %s", test.gold.CForm, m.CForm)
-		}
-		if m.CFormID != test.gold.CFormID {
-			t.Errorf("CFormID Error: expected %d but got %d", test.gold.CFormID, m.CFormID)
-		}
-		if m.Seminfo != test.gold.Seminfo {
-			t.Errorf("Seminfo Error: expected %s but got %s", test.gold.Seminfo, m.Seminfo)
-		}
-		if m.Rep != test.gold.Rep {
-			t.Errorf("Rep Error: expected %s but got %s", test.gold.Rep, m.Rep)
-		}
-		if !reflect.DeepEqual(m.Doukeis, test.gold.Doukeis) {
-			t.Errorf("Doukeis Error: expected %v but got %v", test.gold.Doukeis, m.Doukeis)
-		}
-		if !reflect.DeepEqual(m.Features, test.gold.Features) {
-			t.Errorf("Features Error: expected %v but got %v", test.gold.Features, m.Features)
-		}
-
+		checkMrph(t, m, &test.gold)
 	}
 }
