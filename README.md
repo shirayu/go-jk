@@ -9,7 +9,7 @@
 
 ## What's this
 
-- A go library of a Japanese morphological analyzer [JUMAN](http://nlp.ist.i.kyoto-u.ac.jp/index.php?JUMAN) and Japanese Dependency and Case Structure Analyzer [KNP](http://nlp.ist.i.kyoto-u.ac.jp/index.php?KNP)
+- A go library of a Japanese morphological analyzer [JUMAN](http://nlp.ist.i.kyoto-u.ac.jp/?JUMAN) and [JUMAN++](http://nlp.ist.i.kyoto-u.ac.jp/?JUMAN++), and Japanese Dependency and Case Structure Analyzer [KNP](http://nlp.ist.i.kyoto-u.ac.jp/?KNP)
 
 
 ## INSTALL

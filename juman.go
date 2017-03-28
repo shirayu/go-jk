@@ -2,7 +2,7 @@ package jk
 
 import "strings"
 
-//Juman is a client to execute juman command
+//Juman is a client to execute juman command or jumanpp command
 type Juman struct {
 	*CommandClient
 }
