@@ -6,62 +6,120 @@ import (
 )
 
 func TestMorpheme(t *testing.T) {
-	line := "探して さがして 探す 動詞 2 * 0 子音動詞サ行 5 タ系連用テ形 14 \"代表表記:探す/さがす\""
-	m, err := NewMorpheme(line)
-
-	if err != nil {
-		t.Fatal(err)
+	tests := []struct {
+		line string
+		gold Morpheme
+	}{
+		{
+			line: "探して さがして 探す 動詞 2 * 0 子音動詞サ行 5 タ系連用テ形 14 \"代表表記:探す/さがす\"",
+			gold: Morpheme{
+				Surface:       "探して",
+				Pronunciation: "さがして",
+				RootForm:      "探す",
+				Pos0:          "動詞",
+				Pos0ID:        2,
+				Pos1:          "*",
+				Pos1ID:        0,
+				CType:         "子音動詞サ行",
+				CTypeID:       5,
+				CForm:         "タ系連用テ形",
+				CFormID:       14,
+				Seminfo:       "代表表記:探す/さがす",
+				Rep:           "探す/さがす",
+			},
+		},
+		{
+			line: `を を を 助詞 9 格助詞 1 * 0 * 0 NIL <かな漢字><ひらがな><付属>`,
+			gold: Morpheme{
+				Surface:       "を",
+				Pronunciation: "を",
+				RootForm:      "を",
+				Pos0:          "助詞",
+				Pos0ID:        9,
+				Pos1:          "格助詞",
+				Pos1ID:        1,
+				CType:         "*",
+				CTypeID:       0,
+				CForm:         "*",
+				CFormID:       0,
+				Seminfo:       "",
+				Rep:           "を/を",
+				Features:      Features{"かな漢字": "", "ひらがな": "", "付属": ""},
+			},
+		},
+		{ // KNP style
+			line: "構文 こうぶん 構文 名詞 6 普通名詞 1 * 0 * 0 \"代表表記:構文/こうぶん カテゴリ:抽象物\" " + sampleFeature,
+			gold: Morpheme{
+				Surface:       "構文",
+				Pronunciation: "こうぶん",
+				RootForm:      "構文",
+				Pos0:          "名詞",
+				Pos0ID:        6,
+				Pos1:          "普通名詞",
+				Pos1ID:        1,
+				CType:         "*",
+				CTypeID:       0,
+				CForm:         "*",
+				CFormID:       0,
+				Seminfo:       "代表表記:構文/こうぶん カテゴリ:抽象物",
+				Rep:           "構文/こうぶん",
+				Features:      Features{`代表表記`: `構文/こうぶん`, `カテゴリ`: `抽象物`, `正規化代表表記`: `構文/こうぶん`, `漢字`: ``},
+			},
+		},
 	}
 
-	if m.Surface != "探して" {
-		t.Errorf("Midashi Error\n")
-	} else if m.CFormID != 14 {
-		t.Errorf("Katsuyou2ID Error\n")
-	} else if m.Seminfo != "代表表記:探す/さがす" {
-		t.Errorf("Seminfo_id Error\n")
-	} else if m.Rep != "探す/さがす" {
-		t.Errorf("Rep Error\n")
-	}
-}
+	for _, test := range tests {
+		m, err := NewMorpheme(test.line)
 
-func TestMorpheme2(t *testing.T) {
-	line := `を を を 助詞 9 格助詞 1 * 0 * 0 NIL <かな漢字><ひらがな><付属>`
-	m, err := NewMorpheme(line)
+		if err != nil {
+			t.Fatal(err)
+		}
 
-	if err != nil {
-		t.Fatal(err)
-	}
+		if m.Surface != test.gold.Surface {
+			t.Errorf("Surface Error: expected %s but got %s", test.gold.Surface, m.Surface)
+		}
+		if m.Pronunciation != test.gold.Pronunciation {
+			t.Errorf("Pronunciation Error: expected %s but got %s", test.gold.Pronunciation, m.Pronunciation)
+		}
+		if m.RootForm != test.gold.RootForm {
+			t.Errorf("RootForm Error: expected %s but got %s", test.gold.RootForm, m.RootForm)
+		}
+		if m.Pos0 != test.gold.Pos0 {
+			t.Errorf("Pos0 Error: expected %s but got %s", test.gold.Pos0, m.Pos0)
+		}
+		if m.Pos0ID != test.gold.Pos0ID {
+			t.Errorf("Pos0ID Error: expected %d but got %d", test.gold.Pos0ID, m.Pos0ID)
+		}
+		if m.Pos1 != test.gold.Pos1 {
+			t.Errorf("Pos1 Error: expected %s but got %s", test.gold.Pos1, m.Pos1)
+		}
+		if m.Pos1ID != test.gold.Pos1ID {
+			t.Errorf("Pos1ID Error: expected %d but got %d", test.gold.Pos1ID, m.Pos1ID)
+		}
+		if m.CType != test.gold.CType {
+			t.Errorf("CType Error: expected %s but got %s", test.gold.CType, m.CType)
+		}
+		if m.CTypeID != test.gold.CTypeID {
+			t.Errorf("CTypeID Error: expected %d but got %d", test.gold.CTypeID, m.CTypeID)
+		}
+		if m.CForm != test.gold.CForm {
+			t.Errorf("CForm Error: expected %s but got %s", test.gold.CForm, m.CForm)
+		}
+		if m.CFormID != test.gold.CFormID {
+			t.Errorf("CFormID Error: expected %d but got %d", test.gold.CFormID, m.CFormID)
+		}
+		if m.Seminfo != test.gold.Seminfo {
+			t.Errorf("Seminfo Error: expected %s but got %s", test.gold.Seminfo, m.Seminfo)
+		}
+		if m.Rep != test.gold.Rep {
+			t.Errorf("Rep Error: expected %s but got %s", test.gold.Rep, m.Rep)
+		}
+		if !reflect.DeepEqual(m.Doukeis, test.gold.Doukeis) {
+			t.Errorf("Doukeis Error: expected %v but got %v", test.gold.Doukeis, m.Doukeis)
+		}
+		if !reflect.DeepEqual(m.Features, test.gold.Features) {
+			t.Errorf("Features Error: expected %v but got %v", test.gold.Features, m.Features)
+		}
 
-	if m.Pos0 != "助詞" {
-		t.Fatal("Pos0 error")
-	}
-	if len(m.Features) != 3 {
-		t.Errorf("Expected the number of features is 3 but got %v", m.Features)
-	} else if _, ok := m.Features["かな漢字"]; !ok {
-		t.Errorf("Feautre かな漢字 not found")
-	} else if _, ok := m.Features["ひらがな"]; !ok {
-		t.Errorf("Feautre ひらがな not found")
-	} else if _, ok := m.Features["付属"]; !ok {
-		t.Errorf("Feautre 付属 not found")
-	}
-}
-
-func TestMorphemeKNP(t *testing.T) {
-	line := "構文 こうぶん 構文 名詞 6 普通名詞 1 * 0 * 0 \"代表表記:構文/こうぶん カテゴリ:抽象物\" " + sampleFeature
-	m, err := NewMorpheme(line)
-
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	gf := getFeatures(sampleFeature, '>', 1)
-	if m.Surface != "構文" {
-		t.Errorf("Midashi Error\n")
-	} else if m.CFormID != 0 {
-		t.Errorf("Katsuyou2ID Error\n")
-	} else if m.Rep != "構文/こうぶん" {
-		t.Errorf("Rep Error\n")
-	} else if !reflect.DeepEqual(m.Features, gf) {
-		t.Errorf("Features Error [%v] != [%v]\n", m.Features, gf)
 	}
 }
