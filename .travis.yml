@@ -8,7 +8,7 @@ before_install:
     - go get github.com/golang/lint/golint
     - go get github.com/fzipp/gocyclo
     - pip install --user codecov
-    - go get github.com/lestrrat/go-tcptest
+    - go get -t
 
 install:
     - go get -v ./...
