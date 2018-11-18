@@ -1,7 +1,7 @@
 
 # go-jk
 
-[![Build Status](https://travis-ci.org/shirayu/go-jk.svg?branch=master)](https://travis-ci.org/shirayu/go-jk)
+[![CircleCI](https://circleci.com/gh/shirayu/go-jk.svg?style=svg)](https://circleci.com/gh/shirayu/go-jk)
 [![codecov.io](https://codecov.io/github/shirayu/go-jk/coverage.svg?branch=master)](https://codecov.io/github/shirayu/go-jk?branch=master)
 [![Report card](http://goreportcard.com/badge/shirayu/go-jk)](http://goreportcard.com/report/shirayu/go-jk)
 [![GoDoc](https://godoc.org/github.com/shirayu/go-jk?status.svg)](https://godoc.org/github.com/shirayu/go-jk)
